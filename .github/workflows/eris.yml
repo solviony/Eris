@@ -2,11 +2,11 @@ name: Eris CI Build
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
     tags:
       - "v*"
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 permissions:
   contents: write
@@ -17,21 +17,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # -------------------------
+      # Checkout
+      # -------------------------
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # -------------------------
+      # Node
+      # -------------------------
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
+      # -------------------------
+      # Install + Build
+      # -------------------------
       - name: Install dependencies
         run: npm install
 
       - name: Build Electron app
         run: npm run build
 
+      # -------------------------
+      # Package
+      # -------------------------
       - name: Package Linux artifacts
         run: |
           npx electron-builder --linux deb AppImage \
@@ -39,6 +51,64 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      # -------------------------
+      # Import GPG (tags only)
+      # -------------------------
+      - name: Import GPG signing key
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          echo "${{ secrets.GPG_PRIVATE_KEY }}" | gpg --batch --import
+          echo "pinentry-mode loopback" >> ~/.gnupg/gpg.conf
+          echo "allow-loopback-pinentry" >> ~/.gnupg/gpg-agent.conf
+          gpgconf --kill gpg-agent || true
+
+      # -------------------------
+      # Install signing tools
+      # -------------------------
+      - name: Install signing tools
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y dpkg-sig
+
+      # -------------------------
+      # Sign deb packages
+      # -------------------------
+      - name: Sign deb packages (dpkg-sig)
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        run: |
+          shopt -s nullglob
+          for f in release/*.deb; do
+            echo "Signing $f"
+            dpkg-sig --sign builder \
+              --gpg-options "--batch --yes --pinentry-mode loopback --passphrase $GPG_PASSPHRASE" \
+              "$f"
+            dpkg-sig --verify "$f"
+          done
+
+      # -------------------------
+      # Checksums + signature
+      # -------------------------
+      - name: Generate SHA256 checksums
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          cd release
+          sha256sum *.deb *.AppImage > SHA256SUMS.txt
+
+      - name: Sign SHA256SUMS
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
+        run: |
+          gpg --batch --yes --pinentry-mode loopback \
+            --passphrase "$GPG_PASSPHRASE" \
+            --armor --detach-sign release/SHA256SUMS.txt
+
+      # -------------------------
+      # Upload artifacts
+      # -------------------------
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -46,3 +116,5 @@ jobs:
           path: |
             release/*.deb
             release/*.AppImage
+            release/SHA256SUMS.txt
+            release/SHA256SUMS.txt.asc
