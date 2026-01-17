@@ -37,6 +37,9 @@
   "build": {
     "appId": "com.solviony.eris",
     "productName": "Eris",
+    "extraMetadata": {
+    "main": "dist-electron/main.mjs"
+    },
     "directories": {
       "output": "release",
       "buildResources": "assets"
