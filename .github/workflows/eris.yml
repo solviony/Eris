@@ -39,6 +39,5 @@ jobs:
         with:
           name: eris-linux-build
           path: |
-            dist/*.deb
-            dist/*.AppImage
-
+            release/*.deb
+            release/*.AppImage
