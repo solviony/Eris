@@ -2,11 +2,11 @@
   "name": "eris",
   "productName": "Eris",
   "version": "0.1.0",
-  "description": "Eris — Solvionyx-first work browser (Spaces + Apps)",
+  "description": "Eris — Solvionyx browser (Spaces + Apps)",
   "private": true,
   "license": "GPL-3.0-or-later",
   "author": "Solviony Inc.",
-  "main": "dist-electron/main.mjs"
+  "main": "dist-electron/main.mjs",
   "type": "module",
   "scripts": {
     "dev": "electron-vite dev",
