@@ -6,7 +6,7 @@
   "private": true,
   "license": "GPL-3.0-or-later",
   "author": "Solviony Inc.",
-  "main": "dist-electron/main.js",
+  "main": "dist-electron/main.mjs"
   "type": "module",
   "scripts": {
     "dev": "electron-vite dev",
