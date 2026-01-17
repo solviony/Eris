@@ -7,28 +7,40 @@ export default defineConfig({
     entry: 'src/main/index.ts',
     vite: {
       build: {
-        outDir: 'dist/main',
-        sourcemap: true
-      }
-    }
-  },
-  preload: {
-    input: {
-      index: resolve(__dirname, 'src/preload/index.ts')
+        outDir: 'out/main',
+        sourcemap: true,
+        rollupOptions: {
+          external: [
+            'electron',
+            'electron-updater',
+            'electron-store',
+          ],
+        },
+      },
     },
+  },
+
+  preload: {
+    entry: 'src/preload/index.ts',
     vite: {
       build: {
-        outDir: 'dist/preload',
-        sourcemap: true
-      }
-    }
+        outDir: 'out/preload',
+        sourcemap: true,
+      },
+    },
   },
+
   renderer: {
-    root: resolve(__dirname, 'src/renderer'),
+    root: 'src/renderer',
     plugins: [react()],
     build: {
-      outDir: resolve(__dirname, 'dist/renderer'),
-      emptyOutDir: true
-    }
-  }
+      outDir: 'out/renderer',
+      emptyOutDir: true,
+    },
+    resolve: {
+      alias: {
+        '@': resolve(__dirname, 'src/renderer'),
+      },
+    },
+  },
 })
