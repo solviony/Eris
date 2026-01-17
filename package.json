@@ -44,7 +44,7 @@
     "productName": "Eris",
 
     "directories": {
-      "app": "dist-electron",
+      "app": "out",
       "output": "release",
       "buildResources": "assets"
     },
