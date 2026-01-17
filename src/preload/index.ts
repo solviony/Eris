@@ -1,20 +1,33 @@
-import { contextBridge, ipcRenderer } from 'electron'
+import { contextBridge, ipcRenderer } from "electron";
 
-export type ThemeMode = 'system' | 'dark' | 'light'
+/* -----------------------------
+   App state bridge (existing)
+-------------------------------- */
 
 export type ErisState = {
-  ui: { theme: ThemeMode }
-  spaces: any[]
-}
+  ui: {
+    theme: ThemeMode;
+  };
+  spaces: any[];
+};
 
-contextBridge.exposeInMainWorld('eris', {
-  getState: (): Promise<ErisState> => ipcRenderer.invoke('eris:getState'),
-  setTheme: (theme: ThemeMode) => ipcRenderer.invoke('eris:setTheme', theme),
-  saveSpaces: (spaces: any[]) => ipcRenderer.invoke('eris:saveSpaces', spaces),
-  clearPartition: (partition: string) => ipcRenderer.invoke('eris:clearPartition', partition)
-})
+contextBridge.exposeInMainWorld("eris", {
+  getState: (): Promise<ErisState> =>
+    ipcRenderer.invoke("eris:getState"),
 
-import { contextBridge, ipcRenderer } from "electron";
+  setTheme: (theme: ThemeMode) =>
+    ipcRenderer.invoke("eris:setTheme", theme),
+
+  saveSpaces: (spaces: any[]) =>
+    ipcRenderer.invoke("eris:saveSpaces", spaces),
+
+  clearPartition: (partition: string) =>
+    ipcRenderer.invoke("eris:clearPartition", partition),
+});
+
+/* -----------------------------
+   Updater bridge (Phase 5A)
+-------------------------------- */
 
 type UpdateStatus =
   | { status: "checking" }
@@ -24,11 +37,13 @@ type UpdateStatus =
   | { status: "downloaded"; info?: unknown }
   | { status: "error"; message: string };
 
-const api = {
+const updaterApi = {
   onStatus(cb: (payload: UpdateStatus) => void) {
     const channel = "updater:status";
-    const handler = (_: Electron.IpcRendererEvent, payload: UpdateStatus) =>
-      cb(payload);
+    const handler = (
+      _: Electron.IpcRendererEvent,
+      payload: UpdateStatus
+    ) => cb(payload);
 
     ipcRenderer.on(channel, handler);
     return () => ipcRenderer.removeListener(channel, handler);
@@ -47,4 +62,4 @@ const api = {
   },
 };
 
-contextBridge.exposeInMainWorld("erisUpdater", api);
+contextBridge.exposeInMainWorld("erisUpdater", updaterApi);
