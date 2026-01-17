@@ -8,7 +8,7 @@
   "author": "Solviony Inc.",
   "type": "module",
 
-  "main": "dist-electron/main/index.mjs",
+  "main": "dist-electron/main",
 
   "scripts": {
     "dev": "electron-vite dev",
@@ -43,8 +43,10 @@
     "appId": "com.solviony.eris",
     "productName": "Eris",
 
+    "asar": false,
+
     "extraMetadata": {
-      "main": "dist-electron/main/index.mjs"
+      "main": "dist-electron/main"
     },
 
     "directories": {
