@@ -53,6 +53,14 @@
       "buildResources": "assets"
     },
 
+   "publish": [
+    {
+      "provider": "github",
+      "owner": "solviony",
+      "repo": "Eris"
+    }
+  ],
+
     "extraMetadata": {
       "name": "eris",
       "productName": "Eris",
