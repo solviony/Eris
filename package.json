@@ -5,7 +5,8 @@
   "description": "Eris — Solvionyx-first work browser (Spaces + Apps)",
   "private": true,
   "license": "GPL-3.0-or-later",
-  "main": "dist/main/index.js",
+  "author": "Solviony Inc.",
+  "main": "dist-electron/main.js",
   "type": "module",
   "scripts": {
     "dev": "electron-vite dev",
@@ -37,10 +38,12 @@
     "appId": "com.solviony.eris",
     "productName": "Eris",
     "directories": {
-      "output": "release"
+      "output": "release",
+      "buildResources": "assets"
     },
     "files": [
       "dist/**",
+      "dist-electron/**",
       "assets/**",
       "package.json"
     ],
