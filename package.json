@@ -49,6 +49,13 @@
       "buildResources": "assets"
     },
 
+    "extraMetadata": {
+      "name": "eris",
+      "productName": "Eris",
+      "version": "0.1.0",
+      "main": "main/index.mjs"
+    },
+
     "files": [
       "**/*"
     ],
