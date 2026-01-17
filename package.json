@@ -1,20 +1,16 @@
 {
   "name": "eris",
   "productName": "Eris",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Eris — Solvionyx browser (Spaces + Apps)",
   "private": true,
   "license": "GPL-3.0-or-later",
-
   "author": {
     "name": "Solviony Inc.",
     "email": "support@solviony.com"
   },
-
   "type": "module",
-
   "main": "out/main/index.js",
-
   "scripts": {
     "dev": "electron-vite dev",
     "build": "electron-vite build",
@@ -22,14 +18,12 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "dist": "npm run build && electron-builder"
   },
-
   "dependencies": {
     "electron-store": "^8.2.0",
     "nanoid": "^5.1.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
-
   "devDependencies": {
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
@@ -43,39 +37,36 @@
     "typescript": "^5.5.4",
     "vite": "^5.4.2"
   },
-
   "build": {
     "appId": "com.solviony.eris",
     "productName": "Eris",
-
     "directories": {
       "output": "release",
       "buildResources": "assets"
     },
-
-   "publish": [
-    {
-      "provider": "github",
-      "owner": "solviony",
-      "repo": "Eris"
-    }
-  ],
-
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "solviony",
+        "repo": "Eris"
+      }
+    ],
     "extraMetadata": {
       "name": "eris",
       "productName": "Eris",
       "version": "0.1.0",
       "main": "out/main/index.js"
     },
-
     "files": [
       "out/**",
       "assets/**",
       "package.json"
     ],
-
     "linux": {
-      "target": ["AppImage", "deb"],
+      "target": [
+        "AppImage",
+        "deb"
+      ],
       "category": "Network",
       "icon": "assets/icons",
       "maintainer": "Solviony Inc. <deve@solviony.com>"
