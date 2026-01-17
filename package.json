@@ -8,7 +8,7 @@
   "author": "Solviony Inc.",
   "type": "module",
 
-  "main": "out/main/index.mjs",
+  "main": "out/main/index.js",
 
   "scripts": {
     "dev": "electron-vite dev",
@@ -52,7 +52,7 @@
       "name": "eris",
       "productName": "Eris",
       "version": "0.1.0",
-      "main": "out/main/index.mjs"
+      "main": "out/main/index.js"
     },
 
     "files": [
