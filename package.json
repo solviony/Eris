@@ -1,14 +1,11 @@
 {
   "name": "eris",
   "productName": "Eris",
-  "version": "0.1.1",
-  "description": "Eris — Solvionyx browser (Spaces + Apps)",
+  "version": "0.2.0",
+  "description": "Eris — Solvionyx work browser (Spaces · Apps · VPN)",
   "private": true,
   "license": "GPL-3.0-or-later",
-  "author": {
-    "name": "Solviony Inc.",
-    "email": "support@solviony.com"
-  },
+  "author": { "name": "Solviony Inc.", "email": "support@solviony.com" },
   "type": "module",
   "main": "out/main/index.js",
   "scripts": {
@@ -16,7 +13,10 @@
     "build": "electron-vite build",
     "lint": "eslint .",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "dist": "npm run build && electron-builder"
+    "dist": "npm run build && electron-builder",
+    "dist:mac": "npm run build && electron-builder --mac",
+    "dist:win": "npm run build && electron-builder --win",
+    "dist:linux": "npm run build && electron-builder --linux"
   },
   "dependencies": {
     "electron-store": "^8.2.0",
@@ -41,36 +41,12 @@
   "build": {
     "appId": "com.solviony.eris",
     "productName": "Eris",
-    "directories": {
-      "output": "release",
-      "buildResources": "assets"
-    },
-    "publish": [
-      {
-        "provider": "github",
-        "owner": "solviony",
-        "repo": "Eris"
-      }
-    ],
-    "extraMetadata": {
-      "name": "eris",
-      "productName": "Eris",
-      "version": "0.1.0",
-      "main": "out/main/index.js"
-    },
-    "files": [
-      "out/**",
-      "assets/**",
-      "package.json"
-    ],
-    "linux": {
-      "target": [
-        "AppImage",
-        "deb"
-      ],
-      "category": "Network",
-      "icon": "assets/icons",
-      "maintainer": "Solviony Inc. <deve@solviony.com>"
-    }
+    "directories": { "output": "release", "buildResources": "assets" },
+    "publish": [{ "provider": "github", "owner": "solviony", "repo": "Eris" }],
+    "extraMetadata": { "name": "eris", "productName": "Eris", "version": "0.2.0", "main": "out/main/index.js" },
+    "files": ["out/**", "assets/**", "package.json"],
+    "mac": { "target": ["dmg"], "icon": "assets/icons/512x512.png", "category": "public.app-category.productivity" },
+    "win": { "target": ["nsis"], "icon": "assets/icons/256x256.png" },
+    "linux": { "target": ["AppImage", "deb"], "category": "Network", "icon": "assets/icons", "maintainer": "Solviony Inc. <dev@solviony.com>" }
   }
 }
